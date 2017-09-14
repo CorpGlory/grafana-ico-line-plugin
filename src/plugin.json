@@ -1,0 +1,22 @@
+{
+  "type": "panel",
+  "name": "Ico Line",
+  "id": "grafana-ico-line-plugin",
+  "info": {
+    "description": "Ico Line",
+    "author": {
+      "name": "Alexey Velikiy",
+      "url": "ebertech.ca"
+    },
+    "keywords": [ ],
+    "logos": { },
+    "links": [ ],
+    "screenshots": [ ],
+    "version": "0.0.1",
+    "updated": "2017-04-05"
+  },
+  "dependencies": {
+    "grafanaVersion": "4.1.1",
+    "plugins": [ ]
+  }
+}
