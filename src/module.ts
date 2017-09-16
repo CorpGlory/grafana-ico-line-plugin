@@ -1,14 +1,18 @@
 /// <reference path="./module-config.ts" />
 
 import { ModuleConfig } from './module-config';
+import { Graph } from './graph';
 
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
 
 declare var System: any; // app/headers/common can`t be imported
 
 
 class Ctrl extends MetricsPanelCtrl {
+
   static templateUrl = "partials/template.html";
+  
+  private _graph: Graph;
 
   constructor($scope, $injector) {
     super($scope, $injector);
@@ -20,18 +24,21 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   link(scope, element) {
+    this._graph = new Graph(element);
   }
   
   _initStyles() {
-    System.import(this.panelPath + 'css/panel.base.css!');
-    if(window['grafanaBootData'].user.lightTheme) {
-      System.import(this.panelPath + 'css/panel.light.css!');
-    } else {
-      System.import(this.panelPath + 'css/panel.dark.css!');
-    }
+    loadPluginCss({
+      light: this.panelPath + 'css/panel.light.css',
+      dark: this.panelPath + 'css/panel.dark.css'
+    });
   }
 
   _onDataReceived(seriesList: any) {
+    if(!this._graph) {
+      return;
+    }
+    this._graph.updateData([]);
   }
 
   _onInitEditMode() {
