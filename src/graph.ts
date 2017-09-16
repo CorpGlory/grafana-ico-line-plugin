@@ -2,6 +2,9 @@ import * as d3 from 'd3';
 import * as $ from 'jquery';
 
 
+type d3Selection = d3.Selection<HTMLElement, {}, null, undefined>;
+
+
 const MARGIN = { top: 20, right: 20, bottom: 50, left: 70 };
 
 
@@ -11,7 +14,7 @@ export class Graph {
   private _height: number = 0;
   
   // TODO: use typef ? 
-  private _svg: d3.Selection<HTMLElement, {}, null, undefined>;
+  private _svg: d3Selection;
   private _$holder: JQLite;
 
   constructor(element: any) {

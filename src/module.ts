@@ -1,11 +1,10 @@
 /// <reference path="./module-config.ts" />
+/// <reference path="./graph.ts" />
 
 import { ModuleConfig } from './module-config';
 import { Graph } from './graph';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
-
-declare var System: any; // app/headers/common can`t be imported
 
 
 class Ctrl extends MetricsPanelCtrl {
@@ -54,7 +53,7 @@ class Ctrl extends MetricsPanelCtrl {
   }
   
   private _panelPath?: string;
-  get panelPath() {
+  protected get panelPath() {
     if(!this._panelPath) {
       var panels = window['grafanaBootData'].settings.panels;
       var thisPanel = panels[this.pluginId];
