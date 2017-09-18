@@ -1,3 +1,4 @@
+import { WeatherSeries } from 'model/weather-series';
 import { Grid } from './grid';
 
 import { d3HSelection, d3SSelection } from './types';
@@ -26,8 +27,8 @@ export class Graph {
     this._grid = new Grid(this._canvas, this._renderConfig);
   }
 
-  public updateData(values: object[]) {
-    values = [];
+  public updateData(weatherSerices: WeatherSeries) {
+    
   }
 
   public render() {

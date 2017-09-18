@@ -1,6 +1,3 @@
-/// <reference path="./module-config.ts" />
-/// <reference path="./graph/graph.ts" />
-
 import { ModuleConfig } from './module-config';
 import { Graph } from './graph/graph';
 import { RenderConfig } from './render-config';
