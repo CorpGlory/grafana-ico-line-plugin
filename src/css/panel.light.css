@@ -1,7 +1,7 @@
 
 .axis path.domain,
 .axis line {
-  stroke: white;  
+  stroke: black;  
 }
 
 .axis text {

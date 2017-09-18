@@ -1,5 +1,5 @@
 import { d3SSelection } from './types';
-import { RenderConfig } from './render-config';
+import { RenderConfig } from 'render-config';
 
 import * as d3 from 'd3';
 
@@ -8,7 +8,6 @@ export class Grid {
   private _gX: d3SSelection;
   private _gY: d3SSelection;
 
-  private _back: d3SSelection;
   constructor(canvas: d3SSelection, renderConfig: RenderConfig) {
     this._renderConfig = renderConfig;
 
@@ -17,10 +16,8 @@ export class Grid {
     this._gY = canvas.append("g");
     this._gY.classed('axis y', true);
 
-    this._back = canvas.append('rect');
-    this._back.attr('fill', 'red');
-
   }
+
   public render() {
     if(this._gX === undefined) {
       throw new Error('Group for X axis is undefined');
@@ -35,9 +32,10 @@ export class Grid {
     this._gX
       .attr("transform", `translate(0,${this._renderConfig.height})`)
       .call(d3.axisBottom(this._renderConfig.x));
-
-    this._back.attr('width', this._renderConfig.width);
-    this._back.attr('height', this._renderConfig.height);
-
+    
+    this._gY
+      .attr("transform", `translate(0,0)`)
+      .call(d3.axisLeft(this._renderConfig.y));
   }
+
 }

@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 
 export class RenderConfig {
   public x: d3.ScaleTime<number, number> = d3.scaleTime();
-  public y: d3.ScaleLinear<number, number> = d3.scaleLinear();
+  public y: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([-1, 1]);
   
   public get width() {
     return this.x.range()[1];
@@ -21,4 +21,7 @@ export class RenderConfig {
     this.y.range([value, 0]);
   }
   
+  public set timeRange({ from, to }) {
+    this.x.domain([new Date(from), new Date(to)]);
+  }
 }

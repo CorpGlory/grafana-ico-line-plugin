@@ -1,5 +1,6 @@
+.axis path.domain,
 .axis line {
-  stroke: white;
+  stroke: white;  
 }
 
 .axis text {
