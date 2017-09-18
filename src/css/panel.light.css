@@ -1,9 +1,9 @@
 
-.axis path.domain,
-.axis line {
+.graphHolder .axis path.domain,
+.graphHolder .axis line {
   stroke: black;  
 }
 
-.axis text {
+.graphHolder .axis text {
   fill: black;
 }

@@ -2,3 +2,12 @@
   height: 100%;
   width: 100%;
 }
+
+.graphHolder .grid line {
+  stroke: #555;
+}
+
+.graphHolder .grid .domain {
+  stroke: none
+}
+

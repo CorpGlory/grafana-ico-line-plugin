@@ -1,8 +1,8 @@
-.axis path.domain,
-.axis line {
+.graphHolder .axis path.domain,
+.graphHolder .axis line {
   stroke: white;  
 }
 
-.axis text {
+.graphHolder .axis text {
   fill: white;
 }

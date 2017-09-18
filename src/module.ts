@@ -15,7 +15,7 @@ class Ctrl extends MetricsPanelCtrl {
   private _graph: Graph;
   private _panelContent: HTMLElement;
   private _renderConfig: RenderConfig;
-  
+
   private _$scope: any;
 
   constructor($scope, $injector) {
@@ -27,9 +27,8 @@ class Ctrl extends MetricsPanelCtrl {
     this.events.on('init-edit-mode', this._onInitEditMode.bind(this));
     this.events.on('data-received', this._onDataReceived.bind(this));
     this.events.on('render', this._onRender.bind(this));
-    
+
     this.$scope.showNoData = false;
-    
   }
 
   link(scope, element) {
