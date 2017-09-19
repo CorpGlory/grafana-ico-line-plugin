@@ -1,3 +1,4 @@
+import { WindPoints } from './wind-points';
 import { WeatherSeries } from 'model/weather-series';
 import { Grid } from './grid';
 
@@ -18,6 +19,7 @@ export class Graph {
 
   private _renderConfig: RenderConfig;
   private _grid: Grid;
+  private _windPoints: WindPoints;
 
   constructor(element: HTMLElement, renderConfig: RenderConfig) {
     this._renderConfig = renderConfig;
@@ -25,15 +27,17 @@ export class Graph {
     this._svg = d3.select(this._holder).append("svg");
     this._initCanvas();
     this._grid = new Grid(this._canvas, this._renderConfig);
+    this._windPoints = new WindPoints(this._canvas, this._renderConfig);
   }
 
   public setData(weatherSerices: WeatherSeries) {
-    
+    this._windPoints.setData(weatherSerices.windPoints);
   }
 
   public render() {
     this._updateDimensions();
     this._grid.render();
+    this._windPoints.render();
   }
 
   private _updateDimensions() {
