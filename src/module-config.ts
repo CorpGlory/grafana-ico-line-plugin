@@ -14,9 +14,6 @@ export class ModuleConfig {
   }
   
   public getValue(key: string): any {
-    console.log('get val');
-    console.log(key);
-    console.log(this._panel[key]);
     return this._panel[key];
   }
   

@@ -11,3 +11,7 @@
   stroke: none
 }
 
+.gf-form-group-code,
+.codeEditor {
+  width: 100%;
+}

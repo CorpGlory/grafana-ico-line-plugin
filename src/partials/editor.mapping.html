@@ -2,8 +2,9 @@
   <div class="section gf-form-group gf-form-group-code">
     <h5 class="section-heading">Basic mapping</h5>
     <textarea
-      class="gf-form-input code-editor"
-      ng-model="ctrl.seriesMapper.mappingFunctionSource"
+      class="gf-form-input codeEditor"
+      ng-model="ctrl._seriesMapper.mappingFunctionSource"
+      ng-change="ctrl._updateGraphData"
       rows="10"
     />
   </div>

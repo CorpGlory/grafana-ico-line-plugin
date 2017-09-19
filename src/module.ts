@@ -13,8 +13,9 @@ class Ctrl extends MetricsPanelCtrl {
   private _graph: Graph;
   private _panelContent: HTMLElement;
   private _renderConfig: RenderConfig;
-  
+
   private _seriesMapper: SeriesMapper;
+  private _seriesList: any;
 
   constructor($scope, $injector) {
     super($scope, $injector);
@@ -27,7 +28,7 @@ class Ctrl extends MetricsPanelCtrl {
     this.events.on('render', this._onRender.bind(this));
 
     this.$scope.showNoData = false;
-    this._seriesMapper = $scope.seriesMapper = new SeriesMapper();
+    this._seriesMapper = new SeriesMapper();
   }
 
   link(scope, element) {
@@ -51,8 +52,14 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onRender() {
+    console.log('render');
     this._panelContent.style.height = this.height + 'px';
     this._graph.render();
+  }
+
+  private _updateGraphData() {
+    var weatherSeries = this._seriesMapper.map(this._seriesList);
+    this._graph.setData(weatherSeries);
   }
 
   private _onDataReceived(seriesList: any) {
@@ -61,9 +68,9 @@ class Ctrl extends MetricsPanelCtrl {
     } else {
       this.$scope.showNoData = false;
     }
+    this._seriesList = seriesList;
     this._renderConfig.timeRange = this.range;
-    var weatherSeries = this._seriesMapper.map(seriesList);
-    this._graph.setData(weatherSeries);
+    this._updateGraphData();
     this._onRender();
   }
 
@@ -85,6 +92,7 @@ class Ctrl extends MetricsPanelCtrl {
     }
     return this._panelPath;
   }
+
 }
 
 
