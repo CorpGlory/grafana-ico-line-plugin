@@ -13,6 +13,8 @@ export class WindPoint {
   }
 }
 
+export type WindPointSet = WindPoint[];
+
 export class WeatherSeries {
-  public windPoints: WindPoint[] = [];
+  public windPoints: WindPointSet = [];
 }

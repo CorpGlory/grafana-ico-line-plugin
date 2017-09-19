@@ -1,75 +1,84 @@
-import { ModuleConfig } from 'module-config';
-import { WeatherSeries } from './weather-series';
+import { ModuleConfig } from '../module-config';
+import { WeatherSeries, WindPoint } from './weather-series';
+import * as _ from 'lodash';
 
+console.log(_.VERSION);
 
 const DEFAULT_MAPPING = function(seriesListItem) {
   /*
   Should return:
   {
-    windDirections: [[
-      timestamp,
-      'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW'
+    windPoints: [[
+        timestamp,
+        'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW'
     ]]
   }
   */
+  
+  const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  const WIND_TIME_STEP = 30 * 60 * 1000; // 30 minutes
+  
+  var points = seriesListItem[0].datapoints;
 
-  var res = [];
-  var points = seriesListItem.datapoints;
+  var res = {
+    windPoints: new Array()
+  }
+  
+  var weatherLastTimestamp = 0;
 
-  for (let i = 0; i < points.length; i++) {
+  for (var i = 0; i < points.length; i++) {
     var timestamp = points[i][1];
     var value = points[i][0];
-    res.push();
+    
+    if(timestamp - weatherLastTimestamp >= WIND_TIME_STEP) {
+      weatherLastTimestamp = timestamp;
+      var dir = WIND_DIRECTIONS[Math.floor(value) % WIND_DIRECTIONS.length];
+      res.windPoints.push([timestamp, dir]);
+    }
   }
 
-  // return res;
-
-  return {
-    windDirections: [
-      [1, 'NNE'], [2, 'ENE'], [3, 'NNW'], [4, 'WNW'], [5, 'NW']
-    ]
-  };
+  return res;
 
 }
 
-export function getDefaultOptions() {
-  return {
-    mappingFunctionSource: (DEFAULT_MAPPING + "$")
+export function getDefaultSource() {
+  return (DEFAULT_MAPPING + "$")
       .replace('function DEFAULT_MAPPING(', 'function(')
-      .replace(new RegExp('        ', 'g'), '  ')
-      .replace('      }$', '}')
-  }
+      .replace(new RegExp('    ', 'g'), '  ')
+      .replace('}$', '}');
 }
-
 
 export class SeriesMapper {
-  
-  private _mappingFunction: any;
-  private _moduleConfig: ModuleConfig;
-  
-  constructor(moduleConfig) {
-    this._moduleConfig = moduleConfig;
-    _.defaults(this._moduleConfig, getDefaultOptions());
-    this.update();
-  }
-  
-  public get mappingFunctionSource(): string {
-    return 
-  }
-  
 
-  public mapSeriesToItems(seriesListItem) : WeatherSeries {
+  private _mappingFunction: any;
+
+  constructor() {
+    this._update();
+  }
+
+  public get mappingFunctionSource(): string {
+    var cres = ModuleConfig.getInstance().getValue('mappingFunctionSource');
+    var res = cres !== undefined ? cres : getDefaultSource();
+    return res;
+  }
+
+  public set mappingFunctionSource(value: string) {
+    ModuleConfig.getInstance().setValue('mappingFunctionSource', value);
+    this._update();
+  }
+
+  public map(seriesListItem): WeatherSeries {
     if(seriesListItem === undefined) {
       throw new Error('Trying to pass undefined seriesListItem');
     }
     var rawData: any = this._mappingFunction(seriesListItem);
     var weatherSeries: WeatherSeries = new WeatherSeries();
-    
+    weatherSeries.windPoints = _.map(rawData.windPoints, ([t, s]) => new WindPoint(t, s));
     return weatherSeries;
   }
-  
+
   private _update() {
-    var src = '(' + this._moduleConfig.mappingFunctionSource +')';
+    var src = '(' + this.mappingFunctionSource +')';
     /* jshint ignore:start */
     try {
       this._mappingFunction = eval(src);

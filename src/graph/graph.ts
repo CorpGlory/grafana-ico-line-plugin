@@ -27,7 +27,7 @@ export class Graph {
     this._grid = new Grid(this._canvas, this._renderConfig);
   }
 
-  public updateData(weatherSerices: WeatherSeries) {
+  public setData(weatherSerices: WeatherSeries) {
     
   }
 
