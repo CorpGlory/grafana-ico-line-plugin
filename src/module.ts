@@ -5,6 +5,8 @@ import { SeriesMapper } from './model/series-mapper';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
 
+import * as _ from 'lodash';
+
 
 class Ctrl extends MetricsPanelCtrl {
 
@@ -19,8 +21,7 @@ class Ctrl extends MetricsPanelCtrl {
 
   constructor($scope, $injector) {
     super($scope, $injector);
-    console.log(this.panel);
-    
+
     ModuleConfig.init(this.panel);
     this._initStyles();
     this._renderConfig = new RenderConfig();
@@ -55,11 +56,14 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _onRender() {
     this._panelContent.style.height = this.height + 'px';
+    console.log('h: ' + this._panelContent.style.height);
     this._graph.render();
   }
 
   private _updateGraphData() {
     var weatherSeries = this._seriesMapper.map(this._seriesList);
+    this._renderConfig.speedLimit = _.max(weatherSeries.windPoints.map(s => s.speed));
+    this._renderConfig.wavesLimit = _.max(weatherSeries.windPoints.map(s => s.speed));
     this._graph.setData(weatherSeries);
   }
 

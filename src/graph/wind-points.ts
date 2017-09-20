@@ -2,13 +2,11 @@ import { ModuleConfig } from '../module-config';
 import { RenderConfig } from 'render-config';
 import { d3SSelection } from './types';
 import * as d3 from 'd3';
-import { WindPoint, WindPointSet, WIND_DIRECTIONS_COUNT } from '../model/weather-series';
+import { WindPoint, WindPointSet, WIND_DIRECTIONS_COUNT, WIND_SPEED_SCALES } from '../model/weather-series';
 
 
-// https://en.wikipedia.org/wiki/Beaufort_scale
-const WIND_SCALES = [0, 1, 4, 8, 13, 18, 25, 31, 39, 47, 55, 64, 73];
-const WIND_COLORS = [
-  '#FFFFFF', '#CCFFFF', '#99FFCC', '#99FF99', '#99FF66', 
+const WIND_SPEED_COLORS = [
+  '#FFFFFF', '#CCFFFF', '#99FFCC', '#99FF99', '#99FF66',
   '#99FF00', '#CCFF00', '#FFFF00', '#FFCC00', '#FF9900', 
   '#FF6600', '#FF3300', '#FF0000'
 ];
@@ -26,8 +24,8 @@ export class WindPoints {
     this._g = canvas.append('g');
     this._g.classed('gwindPoints', true);
     this._windColorScale = d3.scaleLinear<string, string>()
-      .domain(WIND_SCALES)
-      .range(WIND_COLORS)
+      .domain(WIND_SPEED_SCALES)
+      .range(WIND_SPEED_COLORS)
       .clamp(true);
   }
 
@@ -41,8 +39,8 @@ export class WindPoints {
 
     var update = g => {
       g.attr('transform', (d: WindPoint) => {
-        var x = this._renderConfig.x(d.timestamp);
-        var y = -this._renderConfig.height / 2;
+        var x = this._renderConfig.scaleTime(d.timestamp);
+        var y = -this._renderConfig.scaleSpeed(d.speed);
         var res = "";
         res += `translate(${x}, ${y})`;
         res += `rotate(${d.direction * 360 / WIND_DIRECTIONS_COUNT})`;

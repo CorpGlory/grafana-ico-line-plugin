@@ -1,5 +1,5 @@
 import { ModuleConfig } from '../module-config';
-import { WeatherSeries, WindPoint } from './weather-series';
+import { WeatherSeries, WindPoint, WavePoint } from './weather-series';
 import * as _ from 'lodash';
 
 
@@ -10,18 +10,20 @@ const DEFAULT_MAPPING = function(seriesListItem) {
     windPoints: [[
         timestamp,
         'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW',
-        speed (mph)
-    ]]
+        speed (meters per second)
+    ]]l,
+    wavePoints: [[timestamp, height]]
   }
   */
 
   const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
-  const WIND_TIME_STEP = 45 * 60 * 1000; // 45 minutes
+  const WIND_TIME_STEP = 100 * 60 * 1000; // 45 minutes
 
   var points = seriesListItem[0].datapoints;
 
   var res = {
-    windPoints: new Array()
+    windPoints: new Array(),
+    wavePoints: new Array()
   }
 
   var weatherLastTimestamp = 0;
@@ -36,6 +38,7 @@ const DEFAULT_MAPPING = function(seriesListItem) {
       var speed = Math.abs(value);
       res.windPoints.push([timestamp, dir, speed]);
     }
+    res.wavePoints.push([timestamp, value * (Math.random() + 0.5)]);
   }
 
   return res;
@@ -75,6 +78,8 @@ export class SeriesMapper {
     var rawData: any = this._mappingFunction(seriesListItem);
     var weatherSeries: WeatherSeries = new WeatherSeries();
     weatherSeries.windPoints = _.map(rawData.windPoints, ([t, d, s]) => new WindPoint(t, d, s));
+    weatherSeries.wavePoints = _.map(rawData.wavePoints, ([t, h]) => new WavePoint(t, h));
+
     return weatherSeries;
   }
 
