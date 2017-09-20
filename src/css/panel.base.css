@@ -20,3 +20,7 @@
 .graphHolder .axis path.domain {
   stroke: none;
 }
+
+.graphHolder .crosshair {
+  stroke: red;
+}

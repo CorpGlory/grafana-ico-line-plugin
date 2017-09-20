@@ -43,15 +43,16 @@ export class Graph {
     this._updateDimensions();
     this._grid.render();
     this._windPoints.render();
+    this._crossHair.render();
     this._renderConfig.stop();
+    
   }
   
-  public showCrosshair() {
-    this._crossHairVisible = true;
+  public showCrosshair(timestamp: number) {
+    this._crossHair.show(timestamp);
   }
   
   public hideCrosshair() {
-    this._crossHairVisible = false;
     this._crossHair.hide();
   }
 

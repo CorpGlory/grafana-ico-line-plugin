@@ -4,6 +4,7 @@ import { RenderConfig } from './render-config';
 import { SeriesMapper } from './model/series-mapper';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
+import appEvents from 'grafana/app/core/app_events';
 
 import * as _ from 'lodash';
 
@@ -24,6 +25,7 @@ class Ctrl extends MetricsPanelCtrl {
 
     ModuleConfig.init(this.panel);
     this._initStyles();
+    this._initCrosshairEvents();
     this._renderConfig = new RenderConfig();
 
     this.events.on('init-edit-mode', this._onInitEditMode.bind(this));
@@ -36,10 +38,31 @@ class Ctrl extends MetricsPanelCtrl {
 
   link(scope, element) {
     this._panelContent = element.find('.panel-content')[0] as HTMLElement;
+    //this._panelContent.style.height = this.height + 'px';
     this._graph = new Graph(
       element.find('.graphHolder')[0] as HTMLElement,
       this._renderConfig
     );
+  }
+  
+  private _initCrosshairEvents() {
+    appEvents.on('graph-hover', event => {
+      var isThis = event.panel.id === this.panel.id;
+      if(isThis) {
+        return;
+      }
+      if(!this.dashboard.sharedTooltipModeEnabled()) {
+        return;
+      }
+      if(this.otherPanelInFullscreenMode()) {
+        return;
+      }
+      this._graph.showCrosshair(event.pos.x);
+    }, this.$scope);
+    
+    appEvents.on('graph-hover-clear', (event, info) => {
+      this._graph.hideCrosshair();
+    }, this.$scope);
   }
 
   private _initStyles() {
@@ -55,8 +78,6 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onRender() {
-    this._panelContent.style.height = this.height + 'px';
-    console.log('h: ' + this._panelContent.style.height);
     this._graph.render();
   }
 
@@ -76,7 +97,7 @@ class Ctrl extends MetricsPanelCtrl {
     this._seriesList = seriesList;
     this._renderConfig.timeRange = this.range;
     this._updateGraphData();
-    this._onRender();
+    this.render();
   }
 
   private _onInitEditMode() {
