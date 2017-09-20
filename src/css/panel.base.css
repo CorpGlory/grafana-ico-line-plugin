@@ -15,3 +15,8 @@
 .codeEditor {
   width: 100%;
 }
+
+.graphHolder .axis line,
+.graphHolder .axis path.domain {
+  stroke: none;
+}

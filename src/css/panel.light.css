@@ -1,9 +1,3 @@
-
-.graphHolder .axis path.domain,
-.graphHolder .axis line {
-  stroke: black;  
-}
-
 .graphHolder .axis text {
   fill: black;
 }

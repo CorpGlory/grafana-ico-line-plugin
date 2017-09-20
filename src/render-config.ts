@@ -24,4 +24,10 @@ export class RenderConfig {
   public set timeRange({ from, to }) {
     this.x.domain([new Date(from), new Date(to)]);
   }
+  
+  // changes state to end of rendering
+  // it is used to track changed vars
+  public stop() {
+    // TODO: implement
+  }
 }

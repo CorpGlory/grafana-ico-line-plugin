@@ -1,6 +1,7 @@
+import { ModuleConfig } from '../module-config';
 import { RenderConfig } from 'render-config';
 import { d3SSelection } from './types';
-import { WindPoint, WindPointSet } from '../model/weather-series';
+import { WindPoint, WindPointSet, WIND_DIRECTIONS_COUNT } from '../model/weather-series';
 
 
 export class WindPoints {
@@ -20,12 +21,33 @@ export class WindPoints {
   }
 
   public render() {
-    var items = this._g.selectAll('g').data(this._windPoints);
-    items
-      .enter()
-        .append('text')
-        .classed('arrowG', true)
-      .merge(items)
-        .text(d => d.direction.toString());
+    this._g.attr('transform', `translate(${0}, ${this._renderConfig.height})`);
+    var items = this._g.selectAll('.arrowG').data(this._windPoints);
+    
+    var update = g => {
+      g.attr('transform', (d: WindPoint) => {
+        var x = this._renderConfig.x(d.timestamp);
+        var y = -this._renderConfig.height / 2;
+        var res = "";
+        res += `translate(${x}, ${y})`;
+        res += `rotate(${d.direction * 360 / WIND_DIRECTIONS_COUNT})`;
+        res += "translate(-8,-5)"
+        return res;
+      })
+    };
+    
+    items.enter()
+      .append('g')
+      .classed('arrowG', true)
+      .call(update)
+      .append('image')
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('xlink:href', ModuleConfig.getInstance().pluginDirName + 'assets/arrow.svg')
+    
+    items.exit().remove();
+
+    items.call(update);
+    
   }
 }

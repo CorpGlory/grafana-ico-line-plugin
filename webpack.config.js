@@ -28,7 +28,8 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'plugin.json' },
       { from: 'css/*' },
-      { from: 'partials/*' }
+      { from: 'partials/*' },
+      { from: 'assets/*' }
     ])
   ],
   resolve: {

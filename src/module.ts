@@ -19,6 +19,8 @@ class Ctrl extends MetricsPanelCtrl {
 
   constructor($scope, $injector) {
     super($scope, $injector);
+    console.log(this.panel);
+    
     ModuleConfig.init(this.panel);
     this._initStyles();
     this._renderConfig = new RenderConfig();
@@ -42,17 +44,16 @@ class Ctrl extends MetricsPanelCtrl {
   private _initStyles() {
     // small hack to load base styles
     loadPluginCss({
-      light: this.panelPath + 'css/panel.base.css',
-      dark: this.panelPath + 'css/panel.base.css'
+      light: ModuleConfig.getInstance().pluginDirName + 'css/panel.base.css',
+      dark: ModuleConfig.getInstance().pluginDirName + 'css/panel.base.css'
     });
     loadPluginCss({
-      light: this.panelPath + 'css/panel.light.css',
-      dark: this.panelPath + 'css/panel.dark.css'
+      light: ModuleConfig.getInstance().pluginDirName + 'css/panel.light.css',
+      dark: ModuleConfig.getInstance().pluginDirName + 'css/panel.dark.css'
     });
   }
 
   private _onRender() {
-    console.log('render');
     this._panelContent.style.height = this.height + 'px';
     this._graph.render();
   }
@@ -75,22 +76,10 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onInitEditMode() {
-    var thisPartialPath = this.panelPath + 'partials/';
+    var thisPartialPath = ModuleConfig.getInstance().pluginDirName + 'partials/';
     this.addEditorTab(
       'Editor', thisPartialPath + 'editor.mapping.html', 2
     );
-  }
-
-  private _panelPath?: string;
-  private get panelPath() {
-    if(!this._panelPath) {
-      var panels = window['grafanaBootData'].settings.panels;
-      var thisPanel = panels[this.pluginId];
-      // the system loader preprends publib to the url,
-      // add a .. to go back one level
-      this._panelPath = '../' + thisPanel.baseUrl + '/';
-    }
-    return this._panelPath;
   }
 
 }

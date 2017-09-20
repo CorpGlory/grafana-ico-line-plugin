@@ -2,7 +2,6 @@ import { ModuleConfig } from '../module-config';
 import { WeatherSeries, WindPoint } from './weather-series';
 import * as _ from 'lodash';
 
-console.log(_.VERSION);
 
 const DEFAULT_MAPPING = function(seriesListItem) {
   /*
@@ -16,7 +15,7 @@ const DEFAULT_MAPPING = function(seriesListItem) {
   */
   
   const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
-  const WIND_TIME_STEP = 30 * 60 * 1000; // 30 minutes
+  const WIND_TIME_STEP = 45 * 60 * 1000; // 45 minutes
   
   var points = seriesListItem[0].datapoints;
 
@@ -32,7 +31,7 @@ const DEFAULT_MAPPING = function(seriesListItem) {
     
     if(timestamp - weatherLastTimestamp >= WIND_TIME_STEP) {
       weatherLastTimestamp = timestamp;
-      var dir = WIND_DIRECTIONS[Math.floor(value) % WIND_DIRECTIONS.length];
+      var dir = WIND_DIRECTIONS[Math.abs(Math.floor(value)) % WIND_DIRECTIONS.length];
       res.windPoints.push([timestamp, dir]);
     }
   }

@@ -8,7 +8,7 @@ import { RenderConfig } from 'render-config';
 import * as d3 from 'd3';
 
 
-const MARGIN = { top: 20, right: 20, bottom: 50, left: 40 };
+const MARGIN = { top: 20, right: 30, bottom: 20, left: 30 };
 
 
 export class Graph {
@@ -38,6 +38,7 @@ export class Graph {
     this._updateDimensions();
     this._grid.render();
     this._windPoints.render();
+    this._renderConfig.stop();
   }
 
   private _updateDimensions() {
@@ -74,15 +75,6 @@ export class Graph {
     this._canvas = this._svg.append('g');
     this._canvas.classed('canvas', true);
     this._canvas.attr('transform', `translate(${MARGIN.left} ${MARGIN.top})`);
-  }
-
-  private _initSomething() {
-    this._canvas
-      .append("circle")
-      .attr("cx", 25)
-      .attr("cy", 25)
-      .attr("r", 25)
-      .style("fill", "purple");
   }
 
 }
