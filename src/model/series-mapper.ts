@@ -9,30 +9,32 @@ const DEFAULT_MAPPING = function(seriesListItem) {
   {
     windPoints: [[
         timestamp,
-        'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW'
+        'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW',
+        speed (mph)
     ]]
   }
   */
-  
+
   const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
   const WIND_TIME_STEP = 45 * 60 * 1000; // 45 minutes
-  
+
   var points = seriesListItem[0].datapoints;
 
   var res = {
     windPoints: new Array()
   }
-  
+
   var weatherLastTimestamp = 0;
 
   for (var i = 0; i < points.length; i++) {
     var timestamp = points[i][1];
     var value = points[i][0];
-    
+
     if(timestamp - weatherLastTimestamp >= WIND_TIME_STEP) {
       weatherLastTimestamp = timestamp;
       var dir = WIND_DIRECTIONS[Math.abs(Math.floor(value)) % WIND_DIRECTIONS.length];
-      res.windPoints.push([timestamp, dir]);
+      var speed = Math.abs(value);
+      res.windPoints.push([timestamp, dir, speed]);
     }
   }
 
@@ -72,7 +74,7 @@ export class SeriesMapper {
     }
     var rawData: any = this._mappingFunction(seriesListItem);
     var weatherSeries: WeatherSeries = new WeatherSeries();
-    weatherSeries.windPoints = _.map(rawData.windPoints, ([t, s]) => new WindPoint(t, s));
+    weatherSeries.windPoints = _.map(rawData.windPoints, ([t, d, s]) => new WindPoint(t, d, s));
     return weatherSeries;
   }
 
