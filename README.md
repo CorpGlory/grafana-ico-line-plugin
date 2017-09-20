@@ -1,12 +1,14 @@
-# Progress List Panel
+# Icons Graph Panel
 
 # Usage
 
-Show list of progress items by mapping your data.
+Show icons
 
 Build
 
 ```
 npm install
-grunt
+npm run build
 ```
+
+Based on [Webpack Typescript Template for Grafana plugins](https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript)
