@@ -5,8 +5,7 @@ const DEFAULT_SPEED_LIMIT = WIND_SPEED_SCALES[Math.floor(WIND_SPEED_SCALES.lengt
 
 export class RenderConfig {
   public scaleTime: d3.ScaleTime<number, number> = d3.scaleTime();
-  public scaleWaves: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([0, 100]);
-  public scaleSpeed: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([0, DEFAULT_SPEED_LIMIT]);
+  public scaleValue: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([0, DEFAULT_SPEED_LIMIT]);
 
   public get width() {
     return this.scaleTime.range()[1];
@@ -17,12 +16,11 @@ export class RenderConfig {
   }
 
   public get height() {
-    return this.scaleWaves.range()[0];
+    return this.scaleValue.range()[0];
   }
 
   public set height(value: number) {
-    this.scaleWaves.range([value, 0]);
-    this.scaleSpeed.range([value, 0]);
+    this.scaleValue.range([value, 0]);
   }
 
   public set timeRange({ from, to }) {
@@ -31,12 +29,12 @@ export class RenderConfig {
   
   public set wavesLimit(to: Number | undefined) {
     var limit = to === undefined ? 100 : to;
-    this.scaleSpeed.domain([0, limit]);
+    this.scaleValue.domain([0, limit]);
   }
   
   public set speedLimit(to: number | undefined) {
     var limit = to === undefined ? DEFAULT_SPEED_LIMIT : to;
-    this.scaleSpeed.domain([0, limit]);
+    this.scaleValue.domain([0, limit]);
   }
 
   // changes state to end of rendering

@@ -34,23 +34,6 @@ export class WindPoint {
 
 export type WindPointSet = WindPoint[];
 
-export class WavePoint {
-  public timestamp: number;
-  public height: number;
-  public constructor(timestamp: number, height: number) {
-    if(timestamp === undefined) {
-      throw new Error('timestamp is undefined');
-    }
-    if(height === undefined) {
-      throw new Error('height is undefined');
-    }
-    this.timestamp = timestamp;
-  }
-}
-
-export type WavePointSet = WavePoint[];
-
 export class WeatherSeries {
   public windPoints: WindPointSet = [];
-  public wavePoints: WavePointSet = [];
 }

@@ -40,7 +40,7 @@ export class WindPoints {
     var update = g => {
       g.attr('transform', (d: WindPoint) => {
         var x = this._renderConfig.scaleTime(d.timestamp);
-        var y = -this._renderConfig.scaleSpeed(d.speed);
+        var y = -this._renderConfig.scaleValue(d.speed);
         var res = "";
         res += `translate(${x}, ${y})`;
         res += `rotate(${d.direction * 360 / WIND_DIRECTIONS_COUNT})`;
@@ -61,6 +61,5 @@ export class WindPoints {
     items.exit().remove();
 
     items.call(update);
-
   }
 }
