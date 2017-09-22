@@ -4,7 +4,7 @@
     "module": "none",
     "target": "es6",
     "rootDir": "./src",
-    "types": ["node"] // for require()
+    "types": ["node"]
   },
   "include": [
     "./src/**/*.ts"

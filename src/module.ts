@@ -3,6 +3,7 @@ import { Graph } from './graph/graph';
 import { RenderConfig } from './render-config';
 import { SeriesMapper } from './model/series-mapper';
 import { Tooltip } from './tooltip';
+import { WeatherSeries, WindPoint } from './model/weather-series';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
 import appEvents from 'grafana/app/core/app_events';
@@ -21,6 +22,7 @@ class Ctrl extends MetricsPanelCtrl {
   private _seriesMapper: SeriesMapper;
   private _seriesList: any;
   private _tooltip: Tooltip;
+  private _weatherSeries: WeatherSeries;
 
   constructor($scope, $injector) {
     super($scope, $injector);
@@ -60,7 +62,11 @@ class Ctrl extends MetricsPanelCtrl {
         }
       }
       this._graph.showCrosshair(event.pos.x);
-      this._tooltip.show(event.pos.x, event.pos.panelRelY);
+      var wpoint = this._weatherSeries.windPoints.findPoint(event.pos.x);
+      if(wpoint === undefined) {
+        return;
+      }
+      this._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint as WindPoint);
     }, this.$scope);
     
     appEvents.on('graph-hover-clear', (event, info) => {
@@ -98,9 +104,9 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _updateGraphData() {
-    var weatherSeries = this._seriesMapper.map(this._seriesList);
-    this._renderConfig.speedLimit = _.max(weatherSeries.windPoints.map(s => s.speed));
-    this._graph.setData(weatherSeries);
+    this._weatherSeries = this._seriesMapper.map(this._seriesList);
+    this._renderConfig.speedLimit = this._weatherSeries.windPoints.getMaxSpeedLimit();
+    this._graph.setData(this._weatherSeries);
   }
 
   private _onDataReceived(seriesList: any) {

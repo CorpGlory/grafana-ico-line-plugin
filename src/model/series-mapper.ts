@@ -75,7 +75,10 @@ export class SeriesMapper {
     }
     var rawData: any = this._mappingFunction(seriesListItem);
     var weatherSeries: WeatherSeries = new WeatherSeries();
-    weatherSeries.windPoints = _.map(rawData.windPoints, ([t, d, s]) => new WindPoint(t, d, s));
+    weatherSeries.windPoints.points = _.map(
+      rawData.windPoints, ([t, d, s]) => new WindPoint(t, d, s)
+    );
+    
 
     return weatherSeries;
   }

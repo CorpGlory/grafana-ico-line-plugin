@@ -35,7 +35,7 @@ export class WindPoints {
 
   public render() {
     this._g.attr('transform', `translate(${0}, ${this._renderConfig.height})`);
-    var items = this._g.selectAll('.arrowG').data(this._windPoints);
+    var items = this._g.selectAll('.arrowG').data(this._windPoints.points);
 
     var update = g => {
       g.attr('transform', (d: WindPoint) => {

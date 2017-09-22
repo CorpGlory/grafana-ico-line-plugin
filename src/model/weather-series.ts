@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 
 export const WIND_DIRECTIONS_COUNT = 16;
 
@@ -32,8 +34,35 @@ export class WindPoint {
   }
 }
 
-export type WindPointSet = WindPoint[];
+export class WindPointSet {
+  private _points: WindPoint[];
+  constructor(points: WindPoint[]) {
+    this._points = points;
+  }
+  public set points(value: WindPoint[]) {
+    this._points = value;
+  }
+  public get points(): WindPoint[] {
+    return this._points;
+  }
+  public findPoint(timestamp: number): WindPoint | undefined {
+    var minDist = Number.POSITIVE_INFINITY;
+    var res: WindPoint | undefined = undefined;
+    for(var i = 0; i < this._points.length; i++) {
+      var point = this._points[i];
+      var dist = timestamp - point.timestamp;
+      if(dist > 0 && dist < minDist) {
+        dist = minDist;
+        res = point;
+      }
+    }
+    return res;
+  }
+  public getMaxSpeedLimit(): number | undefined {
+    return _.max(this._points.map(s => s.speed));
+  }
+}
 
 export class WeatherSeries {
-  public windPoints: WindPointSet = [];
+  public windPoints: WindPointSet = new WindPointSet([]);
 }

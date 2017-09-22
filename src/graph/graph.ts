@@ -60,7 +60,7 @@ export class Graph {
   public hideCrosshair() {
     this._crossHair.hide();
   }
-  
+
   private _initBack() {
     this._back = this._canvas
       .append('rect');
@@ -69,7 +69,7 @@ export class Graph {
       .attr('y', 0)
       .attr('fill', 'rgba(255,255,255,0)');
   }
-  
+
   private _renderBack() {
     this._back.attr('width', this._renderConfig.width);
     this._back.attr('height', this._renderConfig.height);
@@ -79,17 +79,16 @@ export class Graph {
     if(this._renderConfig === undefined) {
       throw new Error('Render config is undefined');
     }
-    
+
     var rectPos = this._holder.getBoundingClientRect();
 
     var width = rectPos.width;
     var height = rectPos.height;
-    
+
     if(height <= 0) {
       throw new Error('Height can`t be less or equar zero');
     }
-    
-    
+
     this._renderConfig.graphX = rectPos.left + MARGIN.left;
     this._renderConfig.graphY = rectPos.top + MARGIN.top;
 
