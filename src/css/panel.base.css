@@ -24,3 +24,13 @@
 .graphHolder .crosshair {
   stroke: red;
 }
+
+.graphHolder .canvas .gwindPoints,
+.graphHolder .canvas .crosshair,
+.graphHolder .canvas .grid {
+  pointer-events: none;
+}
+
+.graphHolder .canvas .back {
+  pointer-events: all;
+}

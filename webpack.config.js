@@ -8,6 +8,7 @@ module.exports = {
   context: __dirname + "/src",
   entry: './module.ts',
   watch: true,
+  devtool: 'source-map',
   output: {
     filename: "module.js",
     path: path.resolve(__dirname, 'dist'),

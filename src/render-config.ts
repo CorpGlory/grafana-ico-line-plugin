@@ -1,7 +1,9 @@
 import * as d3 from 'd3';
 import { WIND_SPEED_SCALES } from './model/weather-series';
 
+
 const DEFAULT_SPEED_LIMIT = WIND_SPEED_SCALES[Math.floor(WIND_SPEED_SCALES.length / 2)];
+
 
 export class RenderConfig {
   public scaleTime: d3.ScaleTime<number, number> = d3.scaleTime();

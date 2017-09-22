@@ -25,7 +25,6 @@ class Ctrl extends MetricsPanelCtrl {
 
     ModuleConfig.init(this.panel);
     this._initStyles();
-    this._initCrosshairEvents();
     this._renderConfig = new RenderConfig();
 
     this.events.on('init-edit-mode', this._onInitEditMode.bind(this));
@@ -43,19 +42,19 @@ class Ctrl extends MetricsPanelCtrl {
       element.find('.graphHolder')[0] as HTMLElement,
       this._renderConfig
     );
+    this._initCrosshairEvents();
   }
   
   private _initCrosshairEvents() {
     appEvents.on('graph-hover', event => {
       var isThis = event.panel.id === this.panel.id;
-      if(isThis) {
-        return;
-      }
-      if(!this.dashboard.sharedTooltipModeEnabled()) {
-        return;
-      }
-      if(this.otherPanelInFullscreenMode()) {
-        return;
+      if(!isThis) {
+        if(!this.dashboard.sharedTooltipModeEnabled()) {
+          return;
+        }
+        if(this.otherPanelInFullscreenMode()) {
+          return;
+        }
       }
       this._graph.showCrosshair(event.pos.x);
     }, this.$scope);
@@ -63,6 +62,17 @@ class Ctrl extends MetricsPanelCtrl {
     appEvents.on('graph-hover-clear', (event, info) => {
       this._graph.hideCrosshair();
     }, this.$scope);
+    
+    this._graph.mouseMoveHandler = (timestamp, panelRelY) => {
+      appEvents.emit('graph-hover', {
+        pos: { x: timestamp, panelRelY: panelRelY },
+        panel: this.panel
+      });
+    };
+    
+    this._graph.mouseOutHandler = () => {
+      appEvents.emit('graph-hover-clear');
+    };
   }
 
   private _initStyles() {

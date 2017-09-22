@@ -1,7 +1,9 @@
 import { d3SSelection } from './types';
 import { RenderConfig } from 'render-config';
 
+
 import * as d3 from 'd3';
+
 
 export class Grid {
   private _renderConfig: RenderConfig;
