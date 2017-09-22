@@ -2,6 +2,7 @@ import { ModuleConfig } from './module-config';
 import { Graph } from './graph/graph';
 import { RenderConfig } from './render-config';
 import { SeriesMapper } from './model/series-mapper';
+import { Tooltip } from './tooltip';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
 import appEvents from 'grafana/app/core/app_events';
@@ -19,20 +20,22 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _seriesMapper: SeriesMapper;
   private _seriesList: any;
+  private _tooltip: Tooltip;
 
   constructor($scope, $injector) {
     super($scope, $injector);
-
     ModuleConfig.init(this.panel);
     this._initStyles();
     this._renderConfig = new RenderConfig();
-
+    
     this.events.on('init-edit-mode', this._onInitEditMode.bind(this));
     this.events.on('data-received', this._onDataReceived.bind(this));
     this.events.on('render', this._onRender.bind(this));
 
     this.$scope.showNoData = false;
     this._seriesMapper = new SeriesMapper();
+    
+    this._tooltip = new Tooltip(this.dashboard, this._renderConfig);
   }
 
   link(scope, element) {
@@ -57,10 +60,12 @@ class Ctrl extends MetricsPanelCtrl {
         }
       }
       this._graph.showCrosshair(event.pos.x);
+      this._tooltip.show(event.pos.x, event.pos.panelRelY);
     }, this.$scope);
     
     appEvents.on('graph-hover-clear', (event, info) => {
       this._graph.hideCrosshair();
+      this._tooltip.hide();
     }, this.$scope);
     
     this._graph.mouseMoveHandler = (timestamp, panelRelY) => {
@@ -89,12 +94,12 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _onRender() {
     this._graph.render();
+    this._tooltip.render();
   }
 
   private _updateGraphData() {
     var weatherSeries = this._seriesMapper.map(this._seriesList);
     this._renderConfig.speedLimit = _.max(weatherSeries.windPoints.map(s => s.speed));
-    this._renderConfig.wavesLimit = _.max(weatherSeries.windPoints.map(s => s.speed));
     this._graph.setData(weatherSeries);
   }
 

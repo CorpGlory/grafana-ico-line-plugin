@@ -2,12 +2,15 @@ import * as d3 from 'd3';
 import { WIND_SPEED_SCALES } from './model/weather-series';
 
 
-const DEFAULT_SPEED_LIMIT = WIND_SPEED_SCALES[Math.floor(WIND_SPEED_SCALES.length / 2)];
+const DEFAULT_VALUE_LIMIT = WIND_SPEED_SCALES[Math.floor(WIND_SPEED_SCALES.length / 2)];
 
 
 export class RenderConfig {
   public scaleTime: d3.ScaleTime<number, number> = d3.scaleTime();
-  public scaleValue: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([0, DEFAULT_SPEED_LIMIT]);
+  public scaleValue: d3.ScaleLinear<number, number> = d3.scaleLinear().domain([0, DEFAULT_VALUE_LIMIT]);
+  
+  public graphX: number = 0;
+  public graphY: number = 0;
 
   public get width() {
     return this.scaleTime.range()[1];
@@ -29,13 +32,8 @@ export class RenderConfig {
     this.scaleTime.domain([new Date(from), new Date(to)]);
   }
   
-  public set wavesLimit(to: Number | undefined) {
-    var limit = to === undefined ? 100 : to;
-    this.scaleValue.domain([0, limit]);
-  }
-  
   public set speedLimit(to: number | undefined) {
-    var limit = to === undefined ? DEFAULT_SPEED_LIMIT : to;
+    var limit = to === undefined ? DEFAULT_VALUE_LIMIT : to;
     this.scaleValue.domain([0, limit]);
   }
 

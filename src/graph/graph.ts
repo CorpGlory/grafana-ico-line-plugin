@@ -79,13 +79,19 @@ export class Graph {
     if(this._renderConfig === undefined) {
       throw new Error('Render config is undefined');
     }
+    
+    var rectPos = this._holder.getBoundingClientRect();
 
-    var width = this._holder.clientWidth;
-    var height = this._holder.clientHeight;
-
+    var width = rectPos.width;
+    var height = rectPos.height;
+    
     if(height <= 0) {
       throw new Error('Height can`t be less or equar zero');
     }
+    
+    
+    this._renderConfig.graphX = rectPos.left + MARGIN.left;
+    this._renderConfig.graphY = rectPos.top + MARGIN.top;
 
     var newWidth = width - (MARGIN.left + MARGIN.right);
     var newHeight = height - (MARGIN.top + MARGIN.bottom);

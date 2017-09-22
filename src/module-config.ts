@@ -12,22 +12,22 @@ export class ModuleConfig {
     }
     return ModuleConfig._instance;
   }
-  
+
   public getValue(key: string): any {
     return this._panel[key];
   }
-  
+
   public setValue(key: string, value: any): void {
     this._panel[key] = value;
   }
-  
+
   private static _instance?: ModuleConfig = undefined;
 
   private _panel: any;
   private constructor(panel: any) {
     this._panel = panel;
   }
-  
+
   private _pluginDirName?: string;
   public get pluginDirName(): string {
     if(!this._pluginDirName) {

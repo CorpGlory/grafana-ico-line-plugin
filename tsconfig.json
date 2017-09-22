@@ -3,7 +3,8 @@
     "strictNullChecks": true,
     "module": "none",
     "target": "es6",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "types": ["node"] // for require()
   },
   "include": [
     "./src/**/*.ts"
