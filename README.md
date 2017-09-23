@@ -1,8 +1,4 @@
-# Icons Graph Panel
-
-# Usage
-
-Weather timeline
+# Weather timeline plugin
 
 ![Main screenshot](https://github.com/CorpGlory/grafana-ico-line-plugin/blob/master/src/screenshots/main.png)
 
