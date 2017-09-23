@@ -2,7 +2,9 @@
 
 # Usage
 
-Show icons
+Weather timeline
+
+![Main screenshot](https://github.com/CorpGlory/grafana-ico-line-plugin/blob/master/src/screenshots/main.png)
 
 Build
 

@@ -10,8 +10,17 @@
     },
     "keywords": [ ],
     "logos": { },
-    "links": [ ],
-    "screenshots": [ ],
+    "links": [{
+      "name": "Project site",
+      "url": "https://github.com/briangann/grafana-datatable-panel"
+    }, {
+      "name": "MIT License",
+      "url": "https://github.com/briangann/grafana-datatable-panel/blob/master/LICENSE"
+    }],
+    "screenshots": [{
+      "name": "Main",
+      "path": "screenshots/main.png"
+    }],
     "version": "0.0.1",
     "updated": "2017-04-05"
   },

@@ -31,7 +31,8 @@ module.exports = {
       { from: 'css/*' },
       { from: 'partials/*' },
       { from: 'assets/*/**' },
-      { from: 'assets/*' }
+      { from: 'assets/*' },
+      { from: 'screenshots/*' }
     ])
   ],
   resolve: {
