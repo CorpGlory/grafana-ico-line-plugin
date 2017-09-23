@@ -1,0 +1,6 @@
+.graphHolder .gridLabel {
+  fill: gray;
+}
+.graphHolder .axis text {
+  fill: white;
+}

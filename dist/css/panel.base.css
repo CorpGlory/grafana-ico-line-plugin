@@ -1,0 +1,36 @@
+.graphHolder {
+  height: 100%;
+  width: 100%;
+}
+
+.graphHolder .grid line {
+  stroke: #555;
+}
+
+.graphHolder .grid .domain {
+  stroke: none
+}
+
+.gf-form-group-code,
+.codeEditor {
+  width: 100%;
+}
+
+.graphHolder .axis line,
+.graphHolder .axis path.domain {
+  stroke: none;
+}
+
+.graphHolder .crosshair {
+  stroke: red;
+}
+
+.graphHolder .canvas .gwindPoints,
+.graphHolder .canvas .crosshair,
+.graphHolder .canvas .grid {
+  pointer-events: none;
+}
+
+.graphHolder .canvas .back {
+  pointer-events: all;
+}

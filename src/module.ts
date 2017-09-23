@@ -42,7 +42,7 @@ class Ctrl extends MetricsPanelCtrl {
 
   link(scope, element) {
     this._panelContent = element.find('.panel-content')[0] as HTMLElement;
-    //this._panelContent.style.height = this.height + 'px';
+    this._panelContent.style.height = this.height + 'px';
     this._graph = new Graph(
       element.find('.graphHolder')[0] as HTMLElement,
       this._renderConfig
@@ -99,6 +99,7 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onRender() {
+    this._panelContent.style.height = this.height + 'px';
     this._graph.render();
     this._tooltip.render();
   }
