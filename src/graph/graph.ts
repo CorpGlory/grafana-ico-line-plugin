@@ -10,7 +10,7 @@ import { RenderConfig } from 'render-config';
 import * as d3 from 'd3';
 
 
-const MARGIN = { top: 20, right: 30, bottom: 20, left: 30 };
+const MARGIN = { top: 60, right: 30, bottom: 20, left: 30 };
 
 
 export class Graph {

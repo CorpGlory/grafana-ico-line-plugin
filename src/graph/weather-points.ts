@@ -32,15 +32,16 @@ export class WeatherPoints {
       .append('image')
       .attr('width', '50')
       .attr('height', '50')
-      .attr('viewBox', '0 0 200 200')
-      .attr('x', 25)
+      .attr('viewBox', '0 0 512 512')
+      .attr('x', -25)
+      .attr('y', -50)
 
     items.exit().remove();
 
     this._g.selectAll('.wIco').data(this._points.points)
       .attr('transform', (d: WeatherPoint) => {
         var x = this._renderConfig.scaleTime(d.timestamp);
-        var y = 30;
+        var y = 0;
         var res = "";
         res += `translate(${x}, ${y})`;
         //res += 'scale(0.035)';

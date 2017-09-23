@@ -18,14 +18,26 @@ const DEFAULT_MAPPING = function(seriesListItem) {
     ]]
   }
   */
+  
+  
 
   const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
   const WIND_TIME_STEP = 100 * 60 * 1000; // 100 minutes
-
-  const WEATHER_TIME_STEP = 24 * 60 * 60 * 1000; // 1 day
+  
   const WEATHER_ID_COUNT = 47;
 
   var points = seriesListItem[0].datapoints;
+  
+  
+  function isInside(timestamp) {
+    if(timestamp < points[0][1]) {
+      return false;
+    }
+    if(timestamp > points[points.length - 1][1]) {
+      return false;
+    }
+    return true;
+  }
 
   var res = {
     windPoints: new Array(),
@@ -39,20 +51,26 @@ const DEFAULT_MAPPING = function(seriesListItem) {
     var timestamp = points[i][1];
     var value = points[i][0];
     
-    var windTimestamp = Math.round(timestamp / WIND_TIME_STEP) * WIND_TIME_STEP;
-    var weatherTimestamp = Math.round(timestamp / WEATHER_TIME_STEP) * WEATHER_TIME_STEP;
+    var windTimestamp = Math.round(timestamp / WIND_TIME_STEP) * WIND_TIME_STEP; // day middle
+    
+    var weatherTimestamp = (new Date(timestamp)).setHours(12,0,0,0);
 
     if(windTimePoints[windTimestamp] === undefined) {
       windTimePoints[windTimestamp] = true;
       var dir = WIND_DIRECTIONS[Math.abs(Math.floor(value)) % WIND_DIRECTIONS.length];
       var speed = Math.abs(value);
-      res.windPoints.push([windTimestamp, dir, speed]);
+      if(isInside(windTimestamp)) {
+        res.windPoints.push([windTimestamp, dir, speed]);
+      }
     }
-
+    
+    //console.log(weatherTimestamp);
     if(weatherTimePoints[weatherTimestamp] === undefined) {
       weatherTimePoints[weatherTimestamp] = true;
       var id = (Math.abs(Math.floor(value)) % WEATHER_ID_COUNT) + 1;
-      res.weatherPoints.push([timestamp, id]);
+      if(isInside(weatherTimestamp)) {
+        res.weatherPoints.push([weatherTimestamp, id]);  
+      }
     }
   }
 
