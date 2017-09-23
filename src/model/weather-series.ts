@@ -1,3 +1,7 @@
+// TODO: WeatherPointSet and WindPointSet common parent class
+// TODO: findPoint via binary search
+
+
 import * as _ from 'lodash';
 
 
@@ -63,6 +67,45 @@ export class WindPointSet {
   }
 }
 
+export class WeatherPoint {
+  public timestamp: number;
+  public id: number;
+  constructor(timestamp: number, id: number) {
+    if(id <= 0 || id > 47) {
+      throw new Error('Weather must be in interval [1, 47]');
+    }
+    this.timestamp = timestamp;
+    this.id = id;
+  }
+}
+
+export class WeatherPointSet {
+  private _points: WeatherPoint[];
+  constructor(points: WeatherPoint[]) {
+    this._points = points;
+  }
+  public set points(value: WeatherPoint[]) {
+    this._points = value;
+  }
+  public get points(): WeatherPoint[] {
+    return this._points;
+  }
+  public findPoint(timestamp: number): WeatherPoint | undefined {
+    var minDist = Number.POSITIVE_INFINITY;
+    var res: WeatherPoint | undefined = undefined;
+    for(var i = 0; i < this._points.length; i++) {
+      var point = this._points[i];
+      var dist = timestamp - point.timestamp;
+      if(dist > 0 && dist < minDist) {
+        dist = minDist;
+        res = point;
+      }
+    }
+    return res;
+  }
+}
+
 export class WeatherSeries {
   public windPoints: WindPointSet = new WindPointSet([]);
+  public weatherPoints: WeatherPointSet = new WeatherPointSet([]);
 }

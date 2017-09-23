@@ -1,4 +1,3 @@
-import { ModuleConfig } from '../module-config';
 import { RenderConfig } from 'render-config';
 import { d3SSelection } from './types';
 import * as d3 from 'd3';
@@ -7,7 +6,7 @@ import { WindPoint, WindPointSet, WIND_DIRECTIONS_COUNT, WIND_SPEED_SCALES } fro
 
 const WIND_SPEED_COLORS = [
   '#FFFFFF', '#CCFFFF', '#99FFCC', '#99FF99', '#99FF66',
-  '#99FF00', '#CCFF00', '#FFFF00', '#FFCC00', '#FF9900', 
+  '#99FF00', '#CCFF00', '#FFFF00', '#FFCC00', '#FF9900',
   '#FF6600', '#FF3300', '#FF0000'
 ];
 
@@ -15,7 +14,7 @@ const WIND_SPEED_COLORS = [
 export class WindPoints {
 
   private _g: d3SSelection;
-  private _windPoints: WindPointSet;
+  private _points: WindPointSet;
   private _renderConfig: RenderConfig;
   private _windColorScale: d3.ScaleLinear<string, string>;
 
@@ -29,16 +28,25 @@ export class WindPoints {
       .clamp(true);
   }
 
-  public setData(windPoints: WindPointSet) {
-    this._windPoints = windPoints;
+  public setData(points: WindPointSet) {
+    this._points = points;
   }
 
   public render() {
     this._g.attr('transform', `translate(${0}, ${this._renderConfig.height})`);
-    var items = this._g.selectAll('.arrowG').data(this._windPoints.points);
+    var items = this._g.selectAll('.arrowG').data(this._points.points);
 
-    var update = g => {
-      g.attr('transform', (d: WindPoint) => {
+    items.enter()
+      .append('g')
+      .classed('arrowG', true)
+      .append('polygon')
+      .attr('points', '94.35,0 58.65,35.7 175.95,153 58.65,270.3 94.35,306 247.35,153')
+    
+    items.exit()
+      .remove();
+    
+    this._g.selectAll('.arrowG').data(this._points.points)
+      .attr('transform', d => {
         var x = this._renderConfig.scaleTime(d.timestamp);
         var y = -this._renderConfig.scaleValue(d.speed);
         var res = "";
@@ -48,18 +56,8 @@ export class WindPoints {
         res += "translate(-247.35,-153)";
         return res;
       })
-    };
-
-    items.enter()
-      .append('g')
-      .classed('arrowG', true)
-      .call(update)
-      .append('polygon')
-      .attr('points', '94.35,0 58.65,35.7 175.95,153 58.65,270.3 94.35,306 247.35,153')
-      .attr('fill', d => this._windColorScale(d.speed));
-
-    items.exit().remove();
-
-    items.call(update);
+      .select('polygon')
+      .attr('fill', d => this._windColorScale(d.speed))
+    
   }
 }

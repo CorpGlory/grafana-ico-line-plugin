@@ -30,6 +30,7 @@ module.exports = {
       { from: 'plugin.json' },
       { from: 'css/*' },
       { from: 'partials/*' },
+      { from: 'assets/*/**' },
       { from: 'assets/*' }
     ])
   ],

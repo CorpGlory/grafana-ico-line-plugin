@@ -1,7 +1,7 @@
 const moment = require('moment');
 import * as $ from 'jquery';
 import { RenderConfig } from './render-config';
-import { WindPoint } from './model/weather-series';
+import { WindPoint, WindDirection } from './model/weather-series';
 
 
 export class Tooltip {
@@ -21,19 +21,19 @@ export class Tooltip {
     this._$tooltip.hide();
   }
 
-  public show(timestamp: number, panelRelY: number, windPoint: WindPoint) {
+  public show(timestamp: number, panelRelY: number, windPoint: WindPoint, ) {
     this._timeStamp = timestamp;
     this._panelRelY = panelRelY;
     this._windPoint = windPoint;
     var x = this._renderConfig.scaleTime(timestamp) + this._renderConfig.graphX;
-    var y = this._renderConfig.height * panelRelY + + this._renderConfig.graphY;
+    var y = this._renderConfig.height * panelRelY + this._renderConfig.graphY;
     var html = `
       <div class="graph-tooltip-time">
         ${this._getCurrentTimeFormatted(timestamp)}
       </div>
     `;
     html += `
-      Direction: ${windPoint.direction} <br/>
+      Direction: ${WindDirection[windPoint.direction]} <br/>
       Speed: ${Math.round(windPoint.speed * 100) / 100}
     `
     this._$tooltip.show().html(html).place_tt(x + 20, y);
@@ -44,14 +44,14 @@ export class Tooltip {
     this._$tooltip.hide();
     this._isVisible = false;
   }
-  
+
   public render() {
     if(!this.isVisible) {
       return;
     }
     this.show(this._timeStamp, this._panelRelY, this._windPoint);
   }
-  
+
   public get isVisible() {
     return this._isVisible;
   }

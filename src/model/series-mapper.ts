@@ -1,5 +1,5 @@
 import { ModuleConfig } from '../module-config';
-import { WeatherSeries, WindPoint } from './weather-series';
+import { WeatherSeries, WindPoint, WeatherPoint } from './weather-series';
 import * as _ from 'lodash';
 
 
@@ -11,32 +11,49 @@ const DEFAULT_MAPPING = function(seriesListItem) {
         timestamp,
         'N'|'NNE'|'NE'|'ENE'|'E'|'ESE'|'SE'|'SSE'|'S'|'SSW'|'SW'|'WSW'|'W'|'WNW'|'NW'|'NNW',
         speed (meters per second)
-    ]]l
+    ]],
+    weatherPoints: [[
+        timestamp,
+        [1..47] (id)
+    ]]
   }
   */
 
   const WIND_DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
-  const WIND_TIME_STEP = 100 * 60 * 1000; // 45 minutes
+  const WIND_TIME_STEP = 100 * 60 * 1000; // 100 minutes
+
+  const WEATHER_TIME_STEP = 24 * 60 * 60 * 1000; // 1 day
+  const WEATHER_ID_COUNT = 47;
 
   var points = seriesListItem[0].datapoints;
 
   var res = {
-    windPoints: new Array()
-  }
-
-  var weatherLastTimestamp = 0;
+    windPoints: new Array(),
+    weatherPoints: new Array()
+  };
+  
+  var windTimePoints = {};
+  var weatherTimePoints = {}
 
   for (var i = 0; i < points.length; i++) {
     var timestamp = points[i][1];
     var value = points[i][0];
+    
+    var windTimestamp = Math.round(timestamp / WIND_TIME_STEP) * WIND_TIME_STEP;
+    var weatherTimestamp = Math.round(timestamp / WEATHER_TIME_STEP) * WEATHER_TIME_STEP;
 
-    if(timestamp - weatherLastTimestamp >= WIND_TIME_STEP) {
-      weatherLastTimestamp = timestamp;
+    if(windTimePoints[windTimestamp] === undefined) {
+      windTimePoints[windTimestamp] = true;
       var dir = WIND_DIRECTIONS[Math.abs(Math.floor(value)) % WIND_DIRECTIONS.length];
       var speed = Math.abs(value);
-      res.windPoints.push([timestamp, dir, speed]);
+      res.windPoints.push([windTimestamp, dir, speed]);
     }
 
+    if(weatherTimePoints[weatherTimestamp] === undefined) {
+      weatherTimePoints[weatherTimestamp] = true;
+      var id = (Math.abs(Math.floor(value)) % WEATHER_ID_COUNT) + 1;
+      res.weatherPoints.push([timestamp, id]);
+    }
   }
 
   return res;
@@ -78,8 +95,9 @@ export class SeriesMapper {
     weatherSeries.windPoints.points = _.map(
       rawData.windPoints, ([t, d, s]) => new WindPoint(t, d, s)
     );
-    
-
+    weatherSeries.weatherPoints.points = _.map(
+      rawData.weatherPoints, ([t, d]) => new WeatherPoint(t, d)
+    );
     return weatherSeries;
   }
 

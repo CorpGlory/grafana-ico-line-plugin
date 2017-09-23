@@ -1,4 +1,5 @@
 import { WindPoints } from './wind-points';
+import { WeatherPoints } from './weather-points';
 import { WeatherSeries } from 'model/weather-series';
 import { Grid } from './grid';
 import { Crosshair } from './crosshair';
@@ -22,6 +23,7 @@ export class Graph {
   private _renderConfig: RenderConfig;
   private _grid: Grid;
   private _windPoints: WindPoints;
+  private _weatherPoints: WeatherPoints;
   private _crossHair: Crosshair;
 
   private _crossHairVisible = false;
@@ -33,15 +35,18 @@ export class Graph {
     this._renderConfig = renderConfig;
     this._holder = element;
     this._svg = d3.select(this._holder).append("svg");
+    
     this._initCanvas();
     this._initBack();
     this._grid = new Grid(this._canvas, this._renderConfig);
     this._windPoints = new WindPoints(this._canvas, this._renderConfig);
+    this._weatherPoints = new WeatherPoints(this._canvas, this._renderConfig);
     this._crossHair = new Crosshair(this._canvas, this._renderConfig);
   }
 
   public setData(weatherSerices: WeatherSeries) {
     this._windPoints.setData(weatherSerices.windPoints);
+    this._weatherPoints.setData(weatherSerices.weatherPoints);
   }
 
   public render() {
@@ -49,6 +54,7 @@ export class Graph {
     this._renderBack();
     this._grid.render();
     this._windPoints.render();
+    this._weatherPoints.render();
     this._crossHair.render();
     this._renderConfig.stop();
   }

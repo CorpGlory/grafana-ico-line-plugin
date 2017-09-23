@@ -29,14 +29,14 @@ class Ctrl extends MetricsPanelCtrl {
     ModuleConfig.init(this.panel);
     this._initStyles();
     this._renderConfig = new RenderConfig();
-    
+
     this.events.on('init-edit-mode', this._onInitEditMode.bind(this));
     this.events.on('data-received', this._onDataReceived.bind(this));
     this.events.on('render', this._onRender.bind(this));
 
     this.$scope.showNoData = false;
     this._seriesMapper = new SeriesMapper();
-    
+
     this._tooltip = new Tooltip(this.dashboard, this._renderConfig);
   }
 
@@ -49,7 +49,7 @@ class Ctrl extends MetricsPanelCtrl {
     );
     this._initCrosshairEvents();
   }
-  
+
   private _initCrosshairEvents() {
     appEvents.on('graph-hover', event => {
       var isThis = event.panel.id === this.panel.id;
@@ -68,19 +68,19 @@ class Ctrl extends MetricsPanelCtrl {
       }
       this._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint as WindPoint);
     }, this.$scope);
-    
+
     appEvents.on('graph-hover-clear', (event, info) => {
       this._graph.hideCrosshair();
       this._tooltip.hide();
     }, this.$scope);
-    
+
     this._graph.mouseMoveHandler = (timestamp, panelRelY) => {
       appEvents.emit('graph-hover', {
         pos: { x: timestamp, panelRelY: panelRelY },
         panel: this.panel
       });
     };
-    
+
     this._graph.mouseOutHandler = () => {
       appEvents.emit('graph-hover-clear');
     };
