@@ -9813,7 +9813,6 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
         key: "_onRender",
         value: function _onRender() {
             this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
-            console.log('set heigh:' + this._panelContent.style.height);
             this._graph.render();
             this._tooltip.render();
         }
@@ -9934,7 +9933,6 @@ var Graph = function () {
                 throw new Error('Render config is undefined');
             }
             var rectPos = this._holder.getBoundingClientRect();
-            console.log('_update dims:' + rectPos.height);
             var width = rectPos.width;
             var height = rectPos.height;
             if (height <= 0) {
@@ -10033,13 +10031,12 @@ var WindPoints = function () {
         value: function render() {
             var _this = this;
 
-            this._g.attr('transform', "translate(" + 0 + ", " + this._renderConfig.height + ")");
             var items = this._g.selectAll('.arrowG').data(this._points.points);
             items.enter().append('g').classed('arrowG', true).append('polygon').attr('points', '94.35,0 58.65,35.7 175.95,153 58.65,270.3 94.35,306 247.35,153');
             items.exit().remove();
             this._g.selectAll('.arrowG').data(this._points.points).attr('transform', function (d) {
                 var x = _this._renderConfig.scaleTime(d.timestamp);
-                var y = -_this._renderConfig.scaleValue(d.speed);
+                var y = _this._renderConfig.scaleValue(d.speed);
                 var res = "";
                 res += "translate(" + x + ", " + y + ")";
                 res += "rotate(" + d.direction * 360 / weather_series_1.WIND_DIRECTIONS_COUNT + ")";
@@ -23291,8 +23288,6 @@ var WeatherPoints = function () {
                 var y = 0;
                 var res = "";
                 res += "translate(" + x + ", " + y + ")";
-                //res += 'scale(0.035)';
-                //res += "translate(-247.35,-153)";
                 return res;
             }).select('image').attr('xlink:href', function (d) {
                 return module_config_1.ModuleConfig.getInstance().pluginDirName + ("assets/weather-dark/" + d.id + ".svg");
@@ -23551,7 +23546,6 @@ var DEFAULT_MAPPING = function DEFAULT_MAPPING(seriesListItem) {
                 res.windPoints.push([windTimestamp, dir, speed]);
             }
         }
-        //console.log(weatherTimestamp);
         if (weatherTimePoints[weatherTimestamp] === undefined) {
             weatherTimePoints[weatherTimestamp] = true;
             var id = Math.abs(Math.floor(value)) % WEATHER_ID_COUNT + 1;

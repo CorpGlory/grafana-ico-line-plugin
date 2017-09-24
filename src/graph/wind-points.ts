@@ -33,7 +33,6 @@ export class WindPoints {
   }
 
   public render() {
-    this._g.attr('transform', `translate(${0}, ${this._renderConfig.height})`);
     var items = this._g.selectAll('.arrowG').data(this._points.points);
 
     items.enter()
@@ -48,7 +47,7 @@ export class WindPoints {
     this._g.selectAll('.arrowG').data(this._points.points)
       .attr('transform', d => {
         var x = this._renderConfig.scaleTime(d.timestamp);
-        var y = -this._renderConfig.scaleValue(d.speed);
+        var y = this._renderConfig.scaleValue(d.speed);
         var res = "";
         res += `translate(${x}, ${y})`;
         res += `rotate(${d.direction * 360 / WIND_DIRECTIONS_COUNT})`;

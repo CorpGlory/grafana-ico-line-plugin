@@ -98,8 +98,6 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _onRender() {
     this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
-    console.log('set heigh:' + this._panelContent.style.height);
-    
     this._graph.render();
     this._tooltip.render();
   }

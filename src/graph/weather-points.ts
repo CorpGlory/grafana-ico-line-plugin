@@ -44,8 +44,6 @@ export class WeatherPoints {
         var y = 0;
         var res = "";
         res += `translate(${x}, ${y})`;
-        //res += 'scale(0.035)';
-        //res += "translate(-247.35,-153)";
         return res;
       })
       .select('image')

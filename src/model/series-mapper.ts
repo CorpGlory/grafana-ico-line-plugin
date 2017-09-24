@@ -63,8 +63,7 @@ const DEFAULT_MAPPING = function(seriesListItem) {
         res.windPoints.push([windTimestamp, dir, speed]);
       }
     }
-    
-    //console.log(weatherTimestamp);
+
     if(weatherTimePoints[weatherTimestamp] === undefined) {
       weatherTimePoints[weatherTimestamp] = true;
       var id = (Math.abs(Math.floor(value)) % WEATHER_ID_COUNT) + 1;
