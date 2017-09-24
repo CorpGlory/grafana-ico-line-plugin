@@ -60,11 +60,15 @@ class Ctrl extends MetricsPanelCtrl {
         }
       }
       this._graph.showCrosshair(event.pos.x);
-      var wpoint = this._weatherSeries.windPoints.findPoint(event.pos.x);
-      if(wpoint === undefined) {
+      if(!isThis && this.dashboard.sharedCrosshairModeOnly()) {
         return;
+      } else {
+        var wpoint = this._weatherSeries.windPoints.findPoint(event.pos.x);
+        if(wpoint === undefined) {
+          return;
+        }
+        this._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint as WindPoint);
       }
-      this._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint as WindPoint);
     }, this.$scope);
 
     appEvents.on('graph-hover-clear', (event, info) => {

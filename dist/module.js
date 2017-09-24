@@ -9776,11 +9776,15 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
                     }
                 }
                 _this2._graph.showCrosshair(event.pos.x);
-                var wpoint = _this2._weatherSeries.windPoints.findPoint(event.pos.x);
-                if (wpoint === undefined) {
+                if (!isThis && _this2.dashboard.sharedCrosshairModeOnly()) {
                     return;
+                } else {
+                    var wpoint = _this2._weatherSeries.windPoints.findPoint(event.pos.x);
+                    if (wpoint === undefined) {
+                        return;
+                    }
+                    _this2._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint);
                 }
-                _this2._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint);
             }, this.$scope);
             app_events_1.default.on('graph-hover-clear', function (event, info) {
                 _this2._graph.hideCrosshair();
