@@ -17,6 +17,7 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _graph: Graph;
   private _panelContent: HTMLElement;
+  private _graphHolder: HTMLElement;
   private _renderConfig: RenderConfig;
 
   private _seriesMapper: SeriesMapper;
@@ -42,11 +43,8 @@ class Ctrl extends MetricsPanelCtrl {
 
   link(scope, element) {
     this._panelContent = element.find('.panel-content')[0] as HTMLElement;
-    this._panelContent.style.height = this.height + 'px';
-    this._graph = new Graph(
-      element.find('.graphHolder')[0] as HTMLElement,
-      this._renderConfig
-    );
+    this._graphHolder = element.find('.graphHolder')[0] as HTMLElement;
+    this._graph = new Graph(this._graphHolder, this._renderConfig);
     this._initCrosshairEvents();
   }
 
@@ -99,7 +97,9 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onRender() {
-    this._panelContent.style.height = this.height + 'px';
+    this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
+    console.log('set heigh:' + this._panelContent.style.height);
+    
     this._graph.render();
     this._tooltip.render();
   }

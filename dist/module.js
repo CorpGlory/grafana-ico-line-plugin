@@ -9756,8 +9756,8 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
         key: "link",
         value: function link(scope, element) {
             this._panelContent = element.find('.panel-content')[0];
-            this._panelContent.style.height = this.height + 'px';
-            this._graph = new graph_1.Graph(element.find('.graphHolder')[0], this._renderConfig);
+            this._graphHolder = element.find('.graphHolder')[0];
+            this._graph = new graph_1.Graph(this._graphHolder, this._renderConfig);
             this._initCrosshairEvents();
         }
     }, {
@@ -9812,7 +9812,8 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
     }, {
         key: "_onRender",
         value: function _onRender() {
-            this._panelContent.style.height = this.height + 'px';
+            this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
+            console.log('set heigh:' + this._panelContent.style.height);
             this._graph.render();
             this._tooltip.render();
         }
@@ -9933,6 +9934,7 @@ var Graph = function () {
                 throw new Error('Render config is undefined');
             }
             var rectPos = this._holder.getBoundingClientRect();
+            console.log('_update dims:' + rectPos.height);
             var width = rectPos.width;
             var height = rectPos.height;
             if (height <= 0) {

@@ -87,6 +87,9 @@ export class Graph {
     }
 
     var rectPos = this._holder.getBoundingClientRect();
+    
+    console.log('_update dims:' + rectPos.height);
+    
 
     var width = rectPos.width;
     var height = rectPos.height;
