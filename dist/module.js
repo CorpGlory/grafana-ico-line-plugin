@@ -23275,7 +23275,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var module_config_1 = __webpack_require__(49);
-var grafanaBootData;
 
 var WeatherPoints = function () {
     function WeatherPoints(canvas, renderConfig) {
@@ -23297,7 +23296,7 @@ var WeatherPoints = function () {
             var _this = this;
 
             var iconsDir = module_config_1.ModuleConfig.getInstance().pluginDirName + 'assets/';
-            if (1 > 2) {
+            if (grafanaBootData.user.lightTheme) {
                 iconsDir += 'weather-light';
             } else {
                 iconsDir += 'weather-dark';

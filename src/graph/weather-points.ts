@@ -4,7 +4,8 @@ import { d3SSelection } from './types';
 import * as d3 from 'd3';
 import { WeatherPoint, WeatherPointSet } from '../model/weather-series';
 
-var grafanaBootData: any;
+declare var grafanaBootData: any; 
+
 
 export class WeatherPoints {
 
@@ -26,7 +27,7 @@ export class WeatherPoints {
   public render() {
     
     var iconsDir = ModuleConfig.getInstance().pluginDirName + 'assets/';
-    if(1 > 2) {
+    if(grafanaBootData.user.lightTheme) {
       iconsDir += 'weather-light';
     } else {
       iconsDir += 'weather-dark';

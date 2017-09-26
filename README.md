@@ -2,6 +2,8 @@
 
 ![Main screenshot](https://github.com/CorpGlory/grafana-ico-line-plugin/blob/master/src/screenshots/main.png)
 
+![Main screenshot](https://github.com/CorpGlory/grafana-ico-line-plugin/blob/master/src/screenshots/main_light.png)
+
 Build
 
 ```

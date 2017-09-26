@@ -34,3 +34,8 @@
 .graphHolder .canvas .back {
   pointer-events: all;
 }
+
+.graphHolder .arrowG polygon {
+  stroke: black;
+  stroke-width: 4;
+}
