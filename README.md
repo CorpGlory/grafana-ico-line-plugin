@@ -9,4 +9,4 @@ npm install
 npm run build
 ```
 
-Based on [Webpack Typescript Template for Grafana plugins](https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript)
+Based on [Webpack Typescript Plugin Template for Grafana](https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript)
