@@ -18,8 +18,11 @@
       "url": "https://github.com/briangann/grafana-datatable-panel/blob/master/LICENSE"
     }],
     "screenshots": [{
-      "name": "Main",
+      "name": "Main Dark",
       "path": "screenshots/main.png"
+    }, {
+      "name": "Main Light",
+      "path": "screenshots/main_light.png"
     }],
     "version": "0.0.1",
     "updated": "2017-04-05"
