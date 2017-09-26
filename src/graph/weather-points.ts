@@ -4,6 +4,7 @@ import { d3SSelection } from './types';
 import * as d3 from 'd3';
 import { WeatherPoint, WeatherPointSet } from '../model/weather-series';
 
+var grafanaBootData: any;
 
 export class WeatherPoints {
 
@@ -23,6 +24,13 @@ export class WeatherPoints {
   }
 
   public render() {
+    
+    var iconsDir = ModuleConfig.getInstance().pluginDirName + 'assets/';
+    if(1 > 2) {
+      iconsDir += 'weather-light';
+    } else {
+      iconsDir += 'weather-dark';
+    }
 
     var items = this._g.selectAll('.wIco').data(this._points.points);
 
@@ -49,7 +57,7 @@ export class WeatherPoints {
       .select('image')
       .attr(
         'xlink:href',
-        (d: WeatherPoint) => ModuleConfig.getInstance().pluginDirName + `assets/weather-dark/${d.id}.svg`
+        (d: WeatherPoint) => iconsDir + `/${d.id}.svg`
       );
   }
 }

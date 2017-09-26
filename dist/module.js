@@ -9740,13 +9740,14 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
 
         var _this = _possibleConstructorReturn(this, (Ctrl.__proto__ || Object.getPrototypeOf(Ctrl)).call(this, $scope, $injector));
 
+        _this._showNoData = false;
         module_config_1.ModuleConfig.init(_this.panel);
         _this._initStyles();
         _this._renderConfig = new render_config_1.RenderConfig();
         _this.events.on('init-edit-mode', _this._onInitEditMode.bind(_this));
         _this.events.on('data-received', _this._onDataReceived.bind(_this));
         _this.events.on('render', _this._onRender.bind(_this));
-        _this.$scope.showNoData = false;
+        _this._showNoData = false;
         _this._seriesMapper = new series_mapper_1.SeriesMapper();
         _this._tooltip = new tooltip_1.Tooltip(_this.dashboard, _this._renderConfig);
         return _this;
@@ -9816,13 +9817,18 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
     }, {
         key: "_onRender",
         value: function _onRender() {
+            console.log('this.$scope.showNoData:' + this._showNoData);
             this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
+            if (this._showNoData) {
+                return;
+            }
             this._graph.render();
             this._tooltip.render();
         }
     }, {
         key: "_updateGraphData",
         value: function _updateGraphData() {
+            console.log('_updateGraphData');
             this._weatherSeries = this._seriesMapper.map(this._seriesList);
             this._renderConfig.speedLimit = this._weatherSeries.windPoints.getMaxSpeedLimit();
             this._graph.setData(this._weatherSeries);
@@ -9831,13 +9837,15 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
         key: "_onDataReceived",
         value: function _onDataReceived(seriesList) {
             if (seriesList === undefined || seriesList.length === 0) {
-                this.$scope.showNoData = true;
+                this._showNoData = true;
             } else {
-                this.$scope.showNoData = false;
+                this._showNoData = false;
             }
             this._seriesList = seriesList;
             this._renderConfig.timeRange = this.range;
-            this._updateGraphData();
+            if (!this._showNoData) {
+                this._updateGraphData();
+            }
             this.render();
         }
     }, {
@@ -9894,6 +9902,9 @@ var Graph = function () {
     _createClass(Graph, [{
         key: "setData",
         value: function setData(weatherSerices) {
+            if (weatherSerices === undefined) {
+                return;
+            }
             this._windPoints.setData(weatherSerices.windPoints);
             this._weatherPoints.setData(weatherSerices.weatherPoints);
         }
@@ -23264,6 +23275,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var module_config_1 = __webpack_require__(49);
+var grafanaBootData;
 
 var WeatherPoints = function () {
     function WeatherPoints(canvas, renderConfig) {
@@ -23284,6 +23296,12 @@ var WeatherPoints = function () {
         value: function render() {
             var _this = this;
 
+            var iconsDir = module_config_1.ModuleConfig.getInstance().pluginDirName + 'assets/';
+            if (1 > 2) {
+                iconsDir += 'weather-light';
+            } else {
+                iconsDir += 'weather-dark';
+            }
             var items = this._g.selectAll('.wIco').data(this._points.points);
             items.enter().append('g').classed('wIco', true).append('image').attr('width', '50').attr('height', '50').attr('viewBox', '0 0 512 512').attr('x', -25).attr('y', -50);
             items.exit().remove();
@@ -23294,7 +23312,7 @@ var WeatherPoints = function () {
                 res += "translate(" + x + ", " + y + ")";
                 return res;
             }).select('image').attr('xlink:href', function (d) {
-                return module_config_1.ModuleConfig.getInstance().pluginDirName + ("assets/weather-dark/" + d.id + ".svg");
+                return iconsDir + ("/" + d.id + ".svg");
             });
         }
     }]);

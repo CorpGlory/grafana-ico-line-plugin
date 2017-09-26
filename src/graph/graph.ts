@@ -45,6 +45,9 @@ export class Graph {
   }
 
   public setData(weatherSerices: WeatherSeries) {
+    if(weatherSerices === undefined) {
+      return;
+    }
     this._windPoints.setData(weatherSerices.windPoints);
     this._weatherPoints.setData(weatherSerices.weatherPoints);
   }

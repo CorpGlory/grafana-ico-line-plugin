@@ -24,6 +24,8 @@ class Ctrl extends MetricsPanelCtrl {
   private _seriesList: any;
   private _tooltip: Tooltip;
   private _weatherSeries: WeatherSeries;
+  
+  private _showNoData: boolean = false;
 
   constructor($scope, $injector) {
     super($scope, $injector);
@@ -35,7 +37,7 @@ class Ctrl extends MetricsPanelCtrl {
     this.events.on('data-received', this._onDataReceived.bind(this));
     this.events.on('render', this._onRender.bind(this));
 
-    this.$scope.showNoData = false;
+    this._showNoData = false;
     this._seriesMapper = new SeriesMapper();
 
     this._tooltip = new Tooltip(this.dashboard, this._renderConfig);
@@ -101,12 +103,17 @@ class Ctrl extends MetricsPanelCtrl {
   }
 
   private _onRender() {
+    console.log('this.$scope.showNoData:' + (this._showNoData));
     this._graphHolder.style.height = this._panelContent.style.height = this.height + 'px';
+    if(this._showNoData) {
+      return;
+    }
     this._graph.render();
     this._tooltip.render();
   }
 
   private _updateGraphData() {
+    console.log('_updateGraphData');   
     this._weatherSeries = this._seriesMapper.map(this._seriesList);
     this._renderConfig.speedLimit = this._weatherSeries.windPoints.getMaxSpeedLimit();
     this._graph.setData(this._weatherSeries);
@@ -114,13 +121,15 @@ class Ctrl extends MetricsPanelCtrl {
 
   private _onDataReceived(seriesList: any) {
     if(seriesList === undefined || seriesList.length === 0) {
-      this.$scope.showNoData = true;
+      this._showNoData = true;
     } else {
-      this.$scope.showNoData = false;
+      this._showNoData = false;
     }
     this._seriesList = seriesList;
     this._renderConfig.timeRange = this.range;
-    this._updateGraphData();
+    if(!this._showNoData) {
+      this._updateGraphData();
+    }
     this.render();
   }
 
