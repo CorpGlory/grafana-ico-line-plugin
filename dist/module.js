@@ -1,4 +1,4 @@
-define(["lodash","moment","jquery","app/plugins/sdk","app/core/app_events"], function(__WEBPACK_EXTERNAL_MODULE_172__, __WEBPACK_EXTERNAL_MODULE_471__, __WEBPACK_EXTERNAL_MODULE_472__, __WEBPACK_EXTERNAL_MODULE_473__, __WEBPACK_EXTERNAL_MODULE_474__) { return /******/ (function(modules) { // webpackBootstrap
+define(["lodash","moment","jquery","app/plugins/sdk","app/core/core"], function(__WEBPACK_EXTERNAL_MODULE_172__, __WEBPACK_EXTERNAL_MODULE_471__, __WEBPACK_EXTERNAL_MODULE_472__, __WEBPACK_EXTERNAL_MODULE_473__, __WEBPACK_EXTERNAL_MODULE_475__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -9730,7 +9730,7 @@ var render_config_1 = __webpack_require__(468);
 var series_mapper_1 = __webpack_require__(469);
 var tooltip_1 = __webpack_require__(470);
 var sdk_1 = __webpack_require__(473);
-var app_events_1 = __webpack_require__(474);
+var core_1 = __webpack_require__(475);
 
 var Ctrl = function (_sdk_1$MetricsPanelCt) {
     _inherits(Ctrl, _sdk_1$MetricsPanelCt);
@@ -9766,7 +9766,7 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
         value: function _initCrosshairEvents() {
             var _this2 = this;
 
-            app_events_1.default.on('graph-hover', function (event) {
+            core_1.appEvents.on('graph-hover', function (event) {
                 var isThis = event.panel.id === _this2.panel.id;
                 if (!isThis) {
                     if (!_this2.dashboard.sharedTooltipModeEnabled()) {
@@ -9787,18 +9787,18 @@ var Ctrl = function (_sdk_1$MetricsPanelCt) {
                     _this2._tooltip.show(event.pos.x, event.pos.panelRelY, wpoint);
                 }
             }, this.$scope);
-            app_events_1.default.on('graph-hover-clear', function (event, info) {
+            core_1.appEvents.on('graph-hover-clear', function (event, info) {
                 _this2._graph.hideCrosshair();
                 _this2._tooltip.hide();
             }, this.$scope);
             this._graph.mouseMoveHandler = function (timestamp, panelRelY) {
-                app_events_1.default.emit('graph-hover', {
+                core_1.appEvents.emit('graph-hover', {
                     pos: { x: timestamp, panelRelY: panelRelY },
                     panel: _this2.panel
                 });
             };
             this._graph.mouseOutHandler = function () {
-                app_events_1.default.emit('graph-hover-clear');
+                core_1.appEvents.emit('graph-hover-clear');
             };
         }
     }, {
@@ -23736,10 +23736,11 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_472__;
 module.exports = __WEBPACK_EXTERNAL_MODULE_473__;
 
 /***/ }),
-/* 474 */
+/* 474 */,
+/* 475 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_474__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_475__;
 
 /***/ })
 /******/ ])});;
