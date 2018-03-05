@@ -6,7 +6,7 @@ import { Tooltip } from './tooltip';
 import { WeatherSeries, WindPoint } from './model/weather-series';
 
 import { MetricsPanelCtrl, loadPluginCss } from 'grafana/app/plugins/sdk';
-import appEvents from 'grafana/app/core/app_events';
+import { appEvents } from 'grafana/app/core/core';
 
 import * as _ from 'lodash';
 
